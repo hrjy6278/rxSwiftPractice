@@ -33,11 +33,57 @@
 import Foundation
 import UIKit
 import Photos
+import RxSwift
 
 class PhotoWriter {
   enum Errors: Error {
     case couldNotSavePhoto
   }
-
-
+ 
+  //사진 저장
+  static func save(_ image: UIImage) -> Observable<String> {
+    
+    return Observable.create { observer in
+      var savedAssetId: String?
+      
+      PHPhotoLibrary.shared().performChanges {
+        let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+        savedAssetId = request.placeholderForCreatedAsset?.localIdentifier
+      } completionHandler: { isSucess, error in
+        DispatchQueue.main.async {
+          if let savedAssetId = savedAssetId, isSucess {
+            observer.onNext(savedAssetId)
+            observer.onCompleted()
+          } else {
+            observer.onError(error ?? Errors.couldNotSavePhoto)
+          }
+        }
+      }
+      return Disposables.create()
+    }
+  }
+  
+  //챌린지 옵저버블 개체를 싱글로 바꾸기
+  static func singleSave(_ image: UIImage) -> Single<String> {
+    var savedAssetId: String?
+    
+    return Single.create { observer in
+      
+      PHPhotoLibrary.shared().performChanges {
+        let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+        savedAssetId = request.placeholderForCreatedAsset?.localIdentifier
+      } completionHandler: { isSucess, error in
+        DispatchQueue.main.async {
+          if let savedAssetId = savedAssetId, isSucess {
+            //성공시 id를 방출함.
+            observer(.success(savedAssetId))
+          } else {
+            //실패시 에러를 방출함
+            observer(.error(error ?? Errors.couldNotSavePhoto))
+          }
+        }
+      }
+      return Disposables.create()
+    }
+  }
 }

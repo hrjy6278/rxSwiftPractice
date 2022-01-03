@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		746467BC2782C0E40044AFA1 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746467BB2782C0E30044AFA1 /* UIViewController + Extension.swift */; };
 		9CDD7B041DE5AABE0058B2D5 /* UIImage+Collage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */; };
 		9CDD7B061DE5BC660058B2D5 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B051DE5BC660058B2D5 /* PhotosViewController.swift */; };
 		9CDD7B081DE6D7ED0058B2D5 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */; };
@@ -17,9 +18,12 @@
 		9CE7E5E61DE5A40A00C8BA5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5E51DE5A40A00C8BA5A /* Assets.xcassets */; };
 		9CE7E5E91DE5A40A00C8BA5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5E71DE5A40A00C8BA5A /* LaunchScreen.storyboard */; };
 		9CE7E5F11DE5A94600C8BA5A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 9CE7E5F01DE5A94600C8BA5A /* Podfile */; };
+		D78C00762863D412AFF088EE /* Pods_Combinestagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3573D41DDFEE58E7A2B5CE06 /* Pods_Combinestagram.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3573D41DDFEE58E7A2B5CE06 /* Pods_Combinestagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Combinestagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		746467BB2782C0E30044AFA1 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIImage+Collage.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9CDD7B051DE5BC660058B2D5 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PhotosViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9CDD7B071DE6D7ED0058B2D5 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PhotoCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -32,6 +36,8 @@
 		9CE7E5E81DE5A40A00C8BA5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CE7E5EA1DE5A40A00C8BA5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CE7E5F01DE5A94600C8BA5A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		D8A2A1ECC31002D38E52A3DE /* Pods-Combinestagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Combinestagram.debug.xcconfig"; path = "Target Support Files/Pods-Combinestagram/Pods-Combinestagram.debug.xcconfig"; sourceTree = "<group>"; };
+		FCCC916B6ED8C5FA0A8A3C48 /* Pods-Combinestagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Combinestagram.release.xcconfig"; path = "Target Support Files/Pods-Combinestagram/Pods-Combinestagram.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D78C00762863D412AFF088EE /* Pods_Combinestagram.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +55,8 @@
 		3E6A5EBD300807128F926FDC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				D8A2A1ECC31002D38E52A3DE /* Pods-Combinestagram.debug.xcconfig */,
+				FCCC916B6ED8C5FA0A8A3C48 /* Pods-Combinestagram.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -67,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				9CDD7B031DE5AABE0058B2D5 /* UIImage+Collage.swift */,
+				746467BB2782C0E30044AFA1 /* UIViewController + Extension.swift */,
 				9CE7E5DC1DE5A40900C8BA5A /* AppDelegate.swift */,
 				9CDD7B0B1DE6E3D30058B2D5 /* PhotoWriter.swift */,
 			);
@@ -80,6 +90,7 @@
 				9CE7E5DB1DE5A40900C8BA5A /* Combinestagram */,
 				9CE7E5DA1DE5A40900C8BA5A /* Products */,
 				3E6A5EBD300807128F926FDC /* Pods */,
+				A991C1700CC30F9921EC6295 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -105,6 +116,14 @@
 			path = Combinestagram;
 			sourceTree = "<group>";
 		};
+		A991C1700CC30F9921EC6295 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3573D41DDFEE58E7A2B5CE06 /* Pods_Combinestagram.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,9 +131,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CE7E5ED1DE5A40A00C8BA5A /* Build configuration list for PBXNativeTarget "Combinestagram" */;
 			buildPhases = (
+				1CFE4F653181870590E0702D /* [CP] Check Pods Manifest.lock */,
 				9CE7E5D51DE5A40900C8BA5A /* Sources */,
 				9CE7E5D61DE5A40900C8BA5A /* Frameworks */,
 				9CE7E5D71DE5A40900C8BA5A /* Resources */,
+				A3C078C8B86986EFD64F4A3C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,7 +153,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Underplot ltd";
 				TargetAttributes = {
 					9CE7E5D81DE5A40900C8BA5A = {
@@ -175,6 +196,51 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1CFE4F653181870590E0702D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Combinestagram-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3C078C8B86986EFD64F4A3C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Combinestagram/Pods-Combinestagram-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Combinestagram/Pods-Combinestagram-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9CE7E5D51DE5A40900C8BA5A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -183,6 +249,7 @@
 				9CDD7B041DE5AABE0058B2D5 /* UIImage+Collage.swift in Sources */,
 				9CDD7B081DE6D7ED0058B2D5 /* PhotoCell.swift in Sources */,
 				9CDD7B061DE5BC660058B2D5 /* PhotosViewController.swift in Sources */,
+				746467BC2782C0E40044AFA1 /* UIViewController + Extension.swift in Sources */,
 				9CDD7B0C1DE6E3D30058B2D5 /* PhotoWriter.swift in Sources */,
 				9CE7E5DF1DE5A40A00C8BA5A /* MainViewController.swift in Sources */,
 				9CE7E5DD1DE5A40A00C8BA5A /* AppDelegate.swift in Sources */,
@@ -236,6 +303,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -295,6 +363,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -324,6 +393,7 @@
 		};
 		9CE7E5EE1DE5A40A00C8BA5A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8A2A1ECC31002D38E52A3DE /* Pods-Combinestagram.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
@@ -338,6 +408,7 @@
 		};
 		9CE7E5EF1DE5A40A00C8BA5A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCCC916B6ED8C5FA0A8A3C48 /* Pods-Combinestagram.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";

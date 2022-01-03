@@ -35,32 +35,92 @@ import RxSwift
 import RxRelay
 
 class MainViewController: UIViewController {
-
+  
   @IBOutlet weak var imagePreview: UIImageView!
   @IBOutlet weak var buttonClear: UIButton!
   @IBOutlet weak var buttonSave: UIButton!
   @IBOutlet weak var itemAdd: UIBarButtonItem!
-
+  
+  private let disposeBag = DisposeBag()
+  private let images = BehaviorRelay<[UIImage]>(value: [])
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
+    //변경사항을 구독한다. Observer를 등록하는 것 변경사항이 오면 이렇게 처리해라 라고 클로저에 담았다.
+    images.subscribe (onNext: { [weak self] photos in
+      guard let self = self else { return }
+      self.updateUI(photos: photos)
+      self.imagePreview.image = photos.collage(size: self.imagePreview.frame.size)
+    })
+      .disposed(by: disposeBag)
+    
   }
   
   @IBAction func actionClear() {
-
+    images.accept([])
   }
-
+  
   @IBAction func actionSave() {
+    guard let image = imagePreview.image else { return }
+    //Single 특성으로 바꾼다.
+    //저장이 성공적이면 성공이라는 얼러트를 띄우고 현재 보여지고 있던 사진들을 지운다.
+    //저장이 실패하면 에러 얼러트를 띄우게 된다.
+    PhotoWriter.save(image)
+      .asSingle()
+      .subscribe { [weak self] id in
+        self?.showMessage("Save With id: \(id)")
+        self?.actionClear()
+      } onError: { [weak self] error in
+        self?.showMessage("Error", description: error.localizedDescription)
+      }.disposed(by: disposeBag)
+
+    
+    //Single로 Emit되는 값 받기
+    PhotoWriter.singleSave(image)
+      .subscribe { id in
+        self.showMessage("save with id: \(id)")
+        self.actionClear()
+      } onError: { error in
+        self.showMessage("error", description: error.localizedDescription)
+      }.disposed(by: disposeBag)
 
   }
-
+  
   @IBAction func actionAdd() {
-
+    // 이미지를 최신으로 업데이트 하는 accept      해당 로직은 더미를 사용함.
+    //    let newImages = images.value + [UIImage(named: "IMG_1907.jpg")!]
+    //    images.accept(newImages)
+    
+    //사진을 선택하는 로직
+    //여기서 PhotosVC에 있는 옵저버블을 구독하게 된다. 옵저버블에는 유저가 고른 사진이 있음.
+    let photosViewController = storyboard!
+      .instantiateViewController(withIdentifier: "PhotosViewController") as! PhotosViewController
+    
+    photosViewController.selectedPhotos.subscribe(onNext: { [weak self] newImage in
+      guard let self = self else { return }
+      self.images.accept(self.images.value + [newImage])
+      
+    },  onDisposed: {
+      print("completed photo selection")
+    })
+    .disposed(by: disposeBag)
+    
+    navigationController?.pushViewController(photosViewController, animated: true)
+    
   }
-
+  
   func showMessage(_ title: String, description: String? = nil) {
-    let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Close", style: .default, handler: { [weak self] _ in self?.dismiss(animated: true, completion: nil)}))
-    present(alert, animated: true, completion: nil)
+    showAlert(title: title, message: description ?? "")
+      .subscribe()
+      .disposed(by: disposeBag)
+  }
+  
+  private func updateUI(photos: [UIImage]) {
+    buttonSave.isEnabled = photos.count > 0 && photos.count % 2 == 0
+    buttonClear.isEnabled = photos.count > 0
+    itemAdd.isEnabled = photos.count < 6
+    
+    title = photos.count > 0 ? "\(photos.count) photos" : "Collage"
   }
 }
