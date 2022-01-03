@@ -43,6 +43,7 @@ class PhotosViewController: UICollectionViewController {
 
   // MARK: private properties
   private let selectedPhotosSubject = PublishSubject<UIImage>()
+  private let bag = DisposeBag()
 
   private lazy var photos = PhotosViewController.loadPhotos()
   private lazy var imageManager = PHCachingImageManager()
@@ -58,11 +59,46 @@ class PhotosViewController: UICollectionViewController {
     allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
     return PHAsset.fetchAssets(with: allPhotosOptions)
   }
+  
+  private func errorMessage() {
+    alert(title: "사진앱에 접근할 수 없음", text: "권한을 다시 설정해주세요.")
+    //alert는 completed 타입이기때문에 asObservable로 Observable바꿔줌
+      .asObservable()
+    //take는 5는 5초동안 변경사항을 감지하겠다는 것 이 시간이 지나면 completed를 받게 된다.
+      .take(DispatchTimeInterval.seconds(5), scheduler: MainScheduler.instance)
+    //5초뒤에는 onComleted가 호출될 것 임. 거기에 completed 되었을때의 행위를 넣어준다.
+      .subscribe(onCompleted: {
+        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+      }).disposed(by: bag)
+  }
 
   // MARK: View Controller
   override func viewDidLoad() {
     super.viewDidLoad()
-
+    
+    //사진앱 권한을 요청
+    let authorized = PHPhotoLibrary.authorized.share()
+    
+    authorized.skipWhile { $0 == false } //사진권한이 false 인 경우 아래로 로직이 타지 않게된다.
+    .take(1)       //1번만 true를 가져오게 되면 더이상 구독하지 않는다.
+    .observeOn(MainScheduler.instance)
+    .subscribe(onNext: { _ in
+      self.photos = PhotosViewController.loadPhotos()
+      self.collectionView.reloadData()
+    }).disposed(by: bag)
+    
+    //사진앱 권한을 주지않았을때 에러메시지를 띄우게 된다.
+    authorized
+      .skip(1)
+      .takeLast(1)
+      .filter { $0 == false }
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [weak self] _ in
+        self?.errorMessage()
+      }).disposed(by: bag)
+      
+    
   }
 
   override func viewWillDisappear(_ animated: Bool) {

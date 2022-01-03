@@ -33,42 +33,50 @@
 import UIKit
 import RxSwift
 import RxRelay
+import RxCocoa
 
 class MainViewController: UIViewController {
-
+  
   @IBOutlet weak var imagePreview: UIImageView!
   @IBOutlet weak var buttonClear: UIButton!
   @IBOutlet weak var buttonSave: UIButton!
   @IBOutlet weak var itemAdd: UIBarButtonItem!
-
+  
   private let bag = DisposeBag()
   private let images = BehaviorRelay<[UIImage]>(value: [])
-
+  //이미지 캐시 구현 (중복 사진 거르기)
+  private var imageCache = [Int]()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    images
-      .subscribe(onNext: { [weak imagePreview] photos in
-        guard let preview = imagePreview else { return }
-
-        preview.image = photos.collage(size: preview.frame.size)
-      })
-      .disposed(by: bag)
-
-    images
+    
+    let imageShare = images.share(replay: 1, scope: .whileConnected)
+    
+    imageShare
+      .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak self] photos in
-        self?.updateUI(photos: photos)
+        guard let self = self else { return }
+        self.updateUI(photos: photos)
+        self.imagePreview.image = photos.collage(size: self.imagePreview.frame.size)
       })
       .disposed(by: bag)
+
+    //images 이 비어있을경우
+    imageShare
+      .skipWhile { $0.isEmpty == false }
+      .subscribe(onNext: {_ in
+        self.navigationItem.leftBarButtonItem?.image = nil
+      }).disposed(by: bag)
   }
   
   @IBAction func actionClear() {
     images.accept([])
+    imageCache = []
   }
-
+  
   @IBAction func actionSave() {
     guard let image = imagePreview.image else { return }
-
+    
     PhotoWriter.save(image)
       .subscribe(
         onSuccess: { [weak self] id in
@@ -81,16 +89,37 @@ class MainViewController: UIViewController {
       )
       .disposed(by: bag)
   }
-
+  
   @IBAction func actionAdd() {
     // images.accept(images.value + [UIImage(named: "IMG_1907.jpg")!])
-
+    
+    
     let photosViewController = storyboard!.instantiateViewController(
       withIdentifier: "PhotosViewController") as! PhotosViewController
-
+    
     navigationController!.pushViewController(photosViewController, animated: true)
-
-    photosViewController.selectedPhotos
+    
+    //share Observable 생성
+    let newPhotos = photosViewController.selectedPhotos.share()
+    
+    newPhotos
+      .takeWhile { [weak self] image in
+        let count = self?.images.value.count ?? 0
+        return count < 6
+      }
+      //filter 메서드로 방출된 조건에 따라 값을 필터링할 수 있다.
+      //해당 로직은 가로로 더 긴 사진들만 필터링해온다.
+      .filter { $0.size.width > $0.size.height }
+    
+    // data의 길이에 따라 필터링하고 캐쉬에 저장된 값이 없을 경우 추가한다.
+      .filter { newImage in
+        let length = newImage.pngData()?.count ?? 0
+        guard self.imageCache.contains(length) == false else {
+          return false
+        }
+        self.imageCache.append(length)
+        return true
+      }
       .subscribe(
         onNext: { [weak self] newImage in
           guard let images = self?.images else { return }
@@ -101,18 +130,38 @@ class MainViewController: UIViewController {
         }
       )
       .disposed(by: bag)
+    
+    //네비게이션 좌측 아이콘 변경
+    //변경감지된 아이템은 받지 않는다 completed 로 바뀌었기때문
+    //completed 된 시점에 네비게이션 아이템을 업데이트 한다.
+    newPhotos
+      .ignoreElements()
+      .subscribe { [weak self] in
+        self?.updateNavigationIcon()
+      }
+      .disposed(by: bag)
   }
-
+  
+  
   func showMessage(_ title: String, description: String? = nil) {
     alert(title: title, text: description)
       .subscribe()
       .disposed(by: bag)
   }
-
+  
   private func updateUI(photos: [UIImage]) {
     buttonSave.isEnabled = photos.count > 0 && photos.count % 2 == 0
     buttonClear.isEnabled = photos.count > 0
     itemAdd.isEnabled = photos.count < 6
     title = photos.count > 0 ? "\(photos.count) photos" : "Collage"
+  }
+  
+  private func updateNavigationIcon() {
+    let icon = imagePreview.image?
+      .scaled(CGSize(width: 22, height: 22))
+      .withRenderingMode(.alwaysOriginal)
+    
+    navigationItem.leftBarButtonItem = UIBarButtonItem(image: icon, style: .done, target: nil, action: nil)
+    
   }
 }
