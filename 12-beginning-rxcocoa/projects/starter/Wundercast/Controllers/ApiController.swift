@@ -93,7 +93,7 @@ class ApiController {
 
   /// The api key to communicate with openweathermap.org
   /// Create you own on https://home.openweathermap.org/users/sign_up
-  private let apiKey = "<#Your Key#>"
+  private let apiKey = "04c5dbe92edae310f256b210c3f1699a"
 
   /// API base URL
   let baseURL = URL(string: "http://api.openweathermap.org/data/2.5")!
@@ -106,10 +106,16 @@ class ApiController {
 
   // MARK: - Api Calls
   func currentWeather(for city: String) -> Observable<Weather> {
-    buildRequest(pathComponent: "weather", params: [("q", city)])
-      .map { data in
-        try JSONDecoder().decode(Weather.self, from: data)
-      }
+//     더미 데이터 부분
+//     실제 네트워크 하는 로직으로 리팩토링
+//      return Observable.just((Weather(cityName: city,
+//                                      temperature: 20,
+//                                      humidity: 90, icon: iconNameToChar(icon: "01d"))))
+      
+      buildRequest(pathComponent: "weather", params: [("q", city)])
+          .map { data in
+              try JSONDecoder().decode(Weather.self, from: data)
+          }
   }
 
   // MARK: - Private Methods
