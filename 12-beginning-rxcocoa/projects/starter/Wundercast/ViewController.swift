@@ -48,34 +48,69 @@ class ViewController: UIViewController {
         
         style()
         
-//        더미데이터 불러오기
-        ApiController.shared.currentWeather(for: "Rxswift")
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { data in
-                self.tempLabel.text = "\(data.temperature)° C"
-                self.iconLabel.text = data.icon
-                self.humidityLabel.text = "\(data.humidity)%"
-                self.cityNameLabel.text = data.cityName
-            })
-            .disposed(by: disposeBag)
-        
-//        텍스트필드를 사용한 FlatMap 검색결과를 flatMap을 하여 네트워크로 통신하는 옵저버블을 새롭게 만든다.
-        searchCityName.rx.text.orEmpty
-            .filter { $0.isEmpty == false }
-            .flatMap { text in
-                ApiController.shared.currentWeather(for: text)
-                    .catchErrorJustReturn(.empty)
-            }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { data in
-                self.tempLabel.text = "\(data.temperature)° C"
-                self.iconLabel.text = data.icon
-                self.humidityLabel.text = "\(data.humidity)%"
-                self.cityNameLabel.text = data.cityName
-            })
-            .disposed(by: disposeBag)
+////        더미데이터 불러오기
+//        ApiController.shared.currentWeather(for: "Rxswift")
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { data in
+//                self.tempLabel.text = "\(data.temperature)° C"
+//                self.iconLabel.text = data.icon
+//                self.humidityLabel.text = "\(data.humidity)%"
+//                self.cityNameLabel.text = data.cityName
+//            })
+//            .disposed(by: disposeBag)
+//
+////        텍스트필드를 사용한 FlatMap 검색결과를 flatMap을 하여 네트워크로 통신하는 옵저버블을 새롭게 만든다.
+//        searchCityName.rx.text.orEmpty
+//            .filter { $0.isEmpty == false }
+//            .flatMap { text in
+//                ApiController.shared.currentWeather(for: text)
+//                    .catchErrorJustReturn(.empty)
+//            }
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { data in
+//                self.tempLabel.text = "\(data.temperature)° C"
+//                self.iconLabel.text = data.icon
+//                self.humidityLabel.text = "\(data.humidity)%"
+//                self.cityNameLabel.text = data.cityName
+//            })
+//            .disposed(by: disposeBag)
         
 
+        //리팩토링
+        //search 라는 단일 Observable을 생성한 뒤 각각의 레이블에 bind한다.
+        //share 는 새로운 구독자가 생길때 캐시로 가지고있는 데이터를 주게 된다. 캐시는 이전 요청했을때의 데이터1개로 설정
+        //observeOn 메서드를 사용하여 아래로 내려가는 스트림 데이터를 메인쓰레드에서 사용하게 함.
+         let search = searchCityName.rx.text.orEmpty
+             .filter { $0.isEmpty == false }
+             .flatMapLatest { text in
+                 ApiController
+                     .shared
+                     .currentWeather(for: text)
+                     .catchErrorJustReturn(.empty)
+             }
+             .share(replay: 1)
+             .observeOn(MainScheduler.instance)
+         
+         
+         search
+             .map { "\($0.temperature)° C" }
+             .bind(to: tempLabel.rx.text)
+             .disposed(by: disposeBag)
+         
+         search
+             .map { $0.icon }
+             .bind(to: iconLabel.rx.text)
+             .disposed(by: disposeBag)
+         
+         search
+             .map { "\($0.humidity)%" }
+             .bind(to: humidityLabel.rx.text)
+             .disposed(by: disposeBag)
+         
+         search
+             .map { $0.cityName }
+             .bind(to: cityNameLabel.rx.text)
+             .disposed(by: disposeBag)
     
     }
     
