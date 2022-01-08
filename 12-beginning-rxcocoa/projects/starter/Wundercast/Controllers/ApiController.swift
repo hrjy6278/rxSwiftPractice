@@ -37,7 +37,7 @@ import RxCocoa
 class ApiController {
   struct Weather: Decodable {
     let cityName: String
-    let temperature: Int
+      var temperature: Int
     let humidity: Int
     let icon: String
 

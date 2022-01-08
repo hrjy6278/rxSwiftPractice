@@ -35,6 +35,8 @@ import RxSwift
 import RxCocoa
 
 class ViewController: UIViewController {
+    
+    @IBOutlet private weak var tempartureChangedSwitch: UISwitch!
     @IBOutlet private var searchCityName: UITextField!
     @IBOutlet private var tempLabel: UILabel!
     @IBOutlet private var humidityLabel: UILabel!
@@ -75,11 +77,11 @@ class ViewController: UIViewController {
         //            })
         //            .disposed(by: disposeBag)
         
-        
+
         
         //Driver로 리팩토링진행
-        let search = searchCityName.rx.controlEvent(.editingDidEnd)
-            .map { self.searchCityName.text ?? "" }
+        let search = searchCityName.rx.controlEvent(.editingDidEndOnExit)
+            .map { _ in self.searchCityName.text ?? "" }
             .filter { $0.isEmpty == false }
             .flatMapLatest { text in
                 ApiController
@@ -87,24 +89,40 @@ class ViewController: UIViewController {
                     .currentWeather(for: text)
                     .catchErrorJustReturn(.empty)
             }
-            .asDriver(onErrorJustReturn: .empty)
         
-        search
-            .map { "\($0.temperature)° C" }
+        //챌린지1 섭씨 <-> 화씨 변경하는 스위치 추가
+        //방법은 네트워크 요청시에 화씨로 달라는 것 과 섭씨를 받아서 화씨로 변경하는 것.
+        //책에서는 두번째 방법을 권장.
+            
+        //스위치 벨류의 Observable 변수 추가
+        let isFahrenheit = tempartureChangedSwitch.rx.value.asObservable()
+        
+        //날씨정보와, 스위치 벨류를 combine한다. 이때 화씨일경우 로직을 실행함.
+        let combineObservable = Observable.combineLatest(search, isFahrenheit) { search, isFahrenheit -> ApiController.Weather in
+            var newSearch = search
+            if isFahrenheit {
+                newSearch.temperature = (newSearch.temperature * Int(1.8)) + 32
+            }
+            return newSearch
+        }.asDriver(onErrorJustReturn: .empty)
+       
+        //스위치 위치에 따른 섭씨 화씨 레이블 변경
+        combineObservable
+            .map { self.tempartureChangedSwitch.isOn ? "\($0.temperature)° F" : "\($0.temperature)° C" }
             .drive(tempLabel.rx.text)
             .disposed(by: disposeBag)
         
-        search
+        combineObservable
             .map { $0.icon }
             .drive(iconLabel.rx.text)
             .disposed(by: disposeBag)
         
-        search
+        combineObservable
             .map { "\($0.humidity)%" }
             .drive(humidityLabel.rx.text)
             .disposed(by: disposeBag)
         
-        search
+        combineObservable
             .map { $0.cityName }
             .drive(cityNameLabel.rx.text)
             .disposed(by: disposeBag)
