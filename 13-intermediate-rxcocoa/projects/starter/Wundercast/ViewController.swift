@@ -54,34 +54,39 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         style()
         
+        //MapButton을 누르면 MapView가 띄워지게끔 하는 로직
+        mapButton.rx.tap
+            .subscribe(onNext: {
+                self.mapView.isHidden.toggle()
+            })
+            .disposed(by: bag)
         
-        //사용자의 위치 데이터를 얻기 위한 권한 얻기 로직
-        //리팩토링 진행
-        //        geoLocationButton.rx.tap
-        //            .subscribe(onNext: { [weak self] _ in
-        //                guard let self = self else { return }
-        //
-        //                self.locationManager.requestWhenInUseAuthorization()
-        //                self.locationManager.startUpdatingLocation()
-        //            })
-        //            .disposed(by: bag)
-        //
-        //        locationManager.rx.didUpdateLocations
-        //            .subscribe(onNext: { locations in
-        //                print(locations)
-        //            })
-        //            .disposed(by: bag)
+        //MKMapView 델리게이트 프록시가 핸들링 할 수 없는 델리게이트 메서드 들을 수신하고 처리할 로직
+        mapView.rx.setDelegate(self)
+            .disposed(by: bag)
         
-        let geoSearch = geoLocationButton.rx.tap
+        //맵뷰의 지역이 바뀌었을때 실행하는 Observable<CLLocation>
+        let mapInput = mapView.rx.regionDidChangeAnimated
+            .skip(1)
+            .map { _ in
+                CLLocation(latitude: self.mapView.centerCoordinate.latitude,
+                           longitude: self.mapView.centerCoordinate.longitude)
+            }
+        
+        //사용자의 위치정보를 가져올때 실행되는 Observable<CLLocation>
+        let geoInput = geoLocationButton.rx.tap
             .flatMapLatest { _ in
                 self.locationManager.rx.getCurrentLocation()
             }
-            .flatMapLatest { location in
-                ApiController
-                    .shared
-                    .currentWeather(at: location.coordinate)
-                    .catchErrorJustReturn(.empty)
-            }
+    
+        //사용자의 위치 데이터를 얻기 위한 권한 얻기 로직
+        let geoSearch = Observable.merge(mapInput, geoInput)
+                    .flatMapLatest { location in
+                        ApiController
+                            .shared
+                            .currentWeather(at: location.coordinate)
+                            .catchErrorJustReturn(.empty)
+                    }
         
         let searchInput = searchCityName.rx
             .controlEvent(.editingDidEndOnExit)
@@ -89,7 +94,6 @@ class ViewController: UIViewController {
             .filter { !$0.isEmpty }
         
         
-       
         let textSearch = searchInput.flatMap { city in
             ApiController
                 .shared
@@ -120,7 +124,8 @@ class ViewController: UIViewController {
         
         let running = Observable.merge(searchInput.map { _ in true },
                                        search.map { _ in false }.asObservable(),
-                                       geoLocationButton.rx.tap.map { _ in true })
+                                       mapInput.map { _ in true },
+                                       geoInput.map { _ in true })
             .startWith(true)
             .asDriver(onErrorJustReturn: false)
         
@@ -162,6 +167,13 @@ class ViewController: UIViewController {
         search.map(\.cityName)
             .drive(cityNameLabel.rx.text)
             .disposed(by: bag)
+        
+        //검색 결과를 mapView에 표시하기 위하여 추가된 로직
+        search
+            .map { $0.overlay() }
+            .drive(mapView.rx.overlay)
+            .disposed(by: bag)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -194,5 +206,17 @@ class ViewController: UIViewController {
         humidityLabel.textColor = UIColor.cream
         iconLabel.textColor = UIColor.cream
         cityNameLabel.textColor = UIColor.cream
+    }
+}
+
+//MKMapView의 Delegate 중 리턴타입이 있는 메서드들만 따로 정의
+extension ViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        guard let overlay = overlay as? ApiController.Weather.Overlay else {
+            return MKOverlayRenderer()
+        }
+        
+        return ApiController.Weather.OverlayView(overlay: overlay,
+                                                 overlayIcon: overlay.icon)
     }
 }
