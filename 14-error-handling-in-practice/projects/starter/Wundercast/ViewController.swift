@@ -99,25 +99,31 @@ class ViewController: UIViewController {
         let textSearch = searchInput.flatMap { text in
             return ApiController.shared.currentWeather(city: text)
             //do를 사용하여 캐쉬에 데이터 저장
+                .observeOn(MainScheduler.instance)
                 .do(onNext: { [weak self] data in
                     self?.cache[text] = data
+                    //에러 발생시 do 사용하여 에러를 띄우게한다.
+                }, onError: { [weak self] error in
+                    guard let self = self else { return }
+                    self.showError(error: error)
                 })
-                    
-                    .retryWhen { e in
-                        return e.enumerated().flatMap { attempt, error -> Observable<Int> in
-                            if attempt >= maxAttempts - 1 {
-                                return Observable.error(error)
-                            }
-                            print("== retrying after \(attempt + 1) seconds ==")
-                            return Observable<Int>.timer(.seconds(attempt + 1),
-                                                         scheduler: MainScheduler.instance)
-                                .take(1)
-                        }
-                    }
+                
                     .catchError { error in
                         return Observable.just(self.cache[text] ?? .empty)
                     }
         }
+        
+//            .retryWhen { e in
+//                return e.enumerated().flatMap { attempt, error -> Observable<Int> in
+//                    if attempt >= maxAttempts - 1 {
+//                        return Observable.error(error)
+//                    }
+//                    print("== retrying after \(attempt + 1) seconds ==")
+//                    return Observable<Int>.timer(.seconds(attempt + 1),
+//                                                 scheduler: MainScheduler.instance)
+//                        .take(1)
+//                }
+//            }
         
         let search = Observable.merge(geoSearch, textSearch)
             .asDriver(onErrorJustReturn: .empty)
@@ -159,6 +165,25 @@ class ViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    private func showError(error: Error) {
+        var errorMessage = "An Error"
+        
+        guard let error = error as? ApiController.ApiError else {
+            InfoView.showIn(viewController: self, message: errorMessage)
+            return
+        }
+        
+        switch error {
+        case .cityNotFound:
+            errorMessage = "City Name is Invalid"
+        case .serverFailure:
+            errorMessage = "Server Error"
+        }
+        
+        InfoView.showIn(viewController: self, message: errorMessage)
+        
     }
     
     func requestKey() {
