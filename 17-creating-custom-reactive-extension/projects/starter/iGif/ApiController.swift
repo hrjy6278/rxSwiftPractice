@@ -36,7 +36,7 @@ import RxSwift
 class ApiController {
   static let shared = ApiController()
 
-  private let apiKey = "<#Your Key#>"
+  private let apiKey = "Gjd0lSp0bZLFxzIutSLG6fQKtmKphJ9C"
   
   func search(text: String) -> Observable<[GiphyGif]> {
     let url = URL(string: "http://api.giphy.com/v1/gifs/search")!
@@ -52,6 +52,11 @@ class ApiController {
     
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-    return Observable.just([])
+      return URLSession
+          .shared
+          .rx
+          .decodable(request: request,
+                     type: GiphySearchResponse.self)
+          .map { $0.data }
   }
 }

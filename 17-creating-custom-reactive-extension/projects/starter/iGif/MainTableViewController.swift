@@ -76,7 +76,7 @@ class MainTableViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "GifCell", for: indexPath) as! GifTableViewCell
-
+      print(gifs.count)
     let gif = gifs[indexPath.item]
     cell.downloadAndDisplay(gif: gif.image.url)
 
