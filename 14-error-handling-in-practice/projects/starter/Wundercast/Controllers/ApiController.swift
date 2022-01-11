@@ -113,6 +113,7 @@ class ApiController {
     enum ApiError: Error {
         case cityNotFound
         case serverFailure
+        case invalidKey
     }
     
     /// The shared instance
@@ -192,6 +193,8 @@ class ApiController {
                     switch response.statusCode {
                     case 200..<300:
                         return data
+                    case 401:
+                        throw ApiError.invalidKey
                     case 400..<500:
                         throw ApiError.cityNotFound
                     default:

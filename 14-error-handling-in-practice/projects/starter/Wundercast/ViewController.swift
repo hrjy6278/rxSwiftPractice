@@ -95,6 +95,22 @@ class ViewController: UIViewController {
         
         let maxAttempts = 4
         
+        let retryHandler: (Observable<Error>) -> Observable<Int> = { e in
+            return e.enumerated().flatMap { attempt, error -> Observable<Int> in
+                if attempt >= maxAttempts - 1 {
+                  return Observable.error(error)
+                } else if let casted = error as? ApiController.ApiError, casted
+                == .invalidKey {
+                  return ApiController.shared.apiKey
+                    .filter { !$0.isEmpty }
+                    .map { _ in 1 }
+                }
+                print("== retrying after \(attempt + 1) seconds ==")
+                return Observable<Int>.timer(.seconds(attempt + 1),
+                                             scheduler: MainScheduler.instance)
+                                      .take(1)
+            }
+        }
         
         let textSearch = searchInput.flatMap { text in
             return ApiController.shared.currentWeather(city: text)
@@ -107,7 +123,7 @@ class ViewController: UIViewController {
                     guard let self = self else { return }
                     self.showError(error: error)
                 })
-                
+                    .retryWhen(retryHandler)
                     .catchError { error in
                         return Observable.just(self.cache[text] ?? .empty)
                     }
@@ -180,6 +196,8 @@ class ViewController: UIViewController {
             errorMessage = "City Name is Invalid"
         case .serverFailure:
             errorMessage = "Server Error"
+        case .invalidKey:
+            errorMessage = "Key is invalid"
         }
         
         InfoView.showIn(viewController: self, message: errorMessage)
