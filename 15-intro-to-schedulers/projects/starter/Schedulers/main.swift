@@ -39,12 +39,54 @@ let globalScheduler = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.glob
 let bag = DisposeBag()
 let animal = BehaviorSubject(value: "[dog]")
 
+//animal
+//  .dump()
+//  .dumpingSubscription()
+//  .disposed(by: bag)
+
 animal
-  .dump()
-  .dumpingSubscription()
-  .disposed(by: bag)
+    .subscribeOn(MainScheduler.instance)
+    .dump()
+    .observeOn(globalScheduler)
+    .dumpingSubscription()
+    .disposed(by: bag)
+
 
 // Start coding here
 
+let fruit = Observable<String>.create { observer in
+    observer.onNext("[Apple]")
+    sleep(2)
+    observer.onNext("[pineapple]")
+    sleep(2)
+    observer.onNext("[strawberry]")
+    sleep(2)
+
+    return Disposables.create()
+}
+
+//스케줄러의 함정
+let animalsThread = Thread() {
+    sleep(3)
+    animal.onNext("[cat]")
+    sleep(3)
+    animal.onNext("[tiger]")
+    sleep(3)
+    animal.onNext("[fox]")
+    sleep(3)
+    animal.onNext("[leopard]")
+}
+
+animalsThread.name = "Animals Thread"
+animalsThread.start()
+
+
+//글로벌큐에서 옵저버블과 이벤트를 Emit하며 이를 수신받는 subscribe는 메인스레드에서 처리함.
+fruit
+    .subscribeOn(globalScheduler)
+    .dump()
+    .observeOn(MainScheduler.instance)
+    .dumpingSubscription()
+    .disposed(by: bag)
 
 RunLoop.main.run(until: Date(timeIntervalSinceNow: 13))
