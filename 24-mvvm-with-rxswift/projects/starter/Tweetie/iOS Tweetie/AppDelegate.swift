@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     if !testing {
       let feedNavigation = window!.rootViewController! as! UINavigationController
+      
       navigator.show(segue: .listTimeline(account, list), sender: feedNavigation)
     }
     return true

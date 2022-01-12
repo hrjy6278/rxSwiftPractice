@@ -100,9 +100,19 @@ class TimelineFetcher {
 
     // Re-fetch the timeline
 
-    timeline = Observable<[Tweet]>.empty()
+    timeline = reachableTimerWithAccount.withLatestFrom(feedCursor.asObservable()) { account, cursor in
+      return (account: account, cursor: cursor)
+    }.flatMapLatest(jsonProvider)
+      .map(Tweet.unboxMany(tweets:))
+      .share(replay: 1)
+      
 
     // Store the latest position through timeline
+    //가장 오래된 트윗id 와 최신 트윗 id를 비교함.
+    timeline
+      .scan(.none, accumulator: TimelineFetcher.currentCursor)
+      .bind(to: feedCursor)
+      .disposed(by: bag)
 
   }
 

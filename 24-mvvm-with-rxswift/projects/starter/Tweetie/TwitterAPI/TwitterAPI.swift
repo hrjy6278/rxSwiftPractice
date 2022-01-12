@@ -81,9 +81,9 @@ struct TwitterAPI: TwitterAPIProtocol {
         params["max_id"]   = String(cursor.maxId)
         params["since_id"] = String(cursor.sinceId)
       }
-      return request(
-        account, address: TwitterAPI.Address.listFeed,
-        parameters: params)
+      return request(account,
+                      address: TwitterAPI.Address.listFeed
+                      ,parameters: params)
     }
   }
 

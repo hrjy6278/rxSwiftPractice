@@ -40,26 +40,60 @@ import RxCocoa
 class ListTimelineViewModel {
   private let bag = DisposeBag()
   private let fetcher: TimelineFetcher
+  
+  let list: ListIdentifier
+  let account: Driver<TwitterAccount.AccountStatus>
 
   // MARK: - Input
+  //뷰컨트롤러가 중지를 원할때 사용하는 Input
+  var paused: Bool = false {
+    didSet {
+      fetcher.paused.accept(paused)
+    }
+  }
 
   // MARK: - Output
+  //로컬에 저장된 트위터를 output으로 내보내는 프로퍼티
+  private(set) var tweets: Observable<(AnyRealmCollection<Tweet>, RealmChangeset?)>!
+  
+  //트위터에 로그인이 되어있는지 여부를 output으로 전달
+  private(set) var isLogined: Driver<Bool>!
 
   // MARK: - Init
   init(account: Driver<TwitterAccount.AccountStatus>,
        list: ListIdentifier,
        apiType: TwitterAPIProtocol.Type = TwitterAPI.self) {
-
+    
+    self.list = list
+    self.account = account
+    
     // fetch and store tweets
     fetcher = TimelineFetcher(account: account, list: list, apiType: apiType)
     bindOutput()
+    
+    //네트워킹을 통해 가져온 최신 트윗을 Realm으로 로컬에 저장하는 로직
+    fetcher.timeline
+      .subscribe(Realm.rx.add(update: .all))
+      .disposed(by: bag)
 
   }
 
   // MARK: - Methods
   private func bindOutput() {
     // Bind tweets
-
+    guard let realm = try? Realm() else { return }
+    
+    tweets = Observable.changeset(from: realm.objects(Tweet.self))
+    
     // Bind if an account is available
+    isLogined = account.map { status in
+      switch status {
+      case .authorized:
+        return true
+      case .unavailable:
+        return false
+      }
+    }
+    .asDriver()
   }
 }
