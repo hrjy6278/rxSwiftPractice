@@ -51,6 +51,7 @@ class ListPeopleViewModel {
 
   // MARK: - Output
   let people = BehaviorRelay<[User]?>(value: nil)
+  let isFinishedFetch = BehaviorRelay<Bool>(value: false)
 
   // MARK: - Init
   init(account: Driver<TwitterAccount.AccountStatus>,
@@ -60,7 +61,7 @@ class ListPeopleViewModel {
     self.account = account
     self.list = list
     self.apiType = apiType
-
+    
     bindOutput()
   }
 
@@ -90,5 +91,11 @@ class ListPeopleViewModel {
       }
       .bind(to: people)
       .disposed(by: bag)
+    
+    people
+      .map { $0 == nil ? false : true }
+      .bind(to: isFinishedFetch)
+      .disposed(by: bag)
   }
+  
 }

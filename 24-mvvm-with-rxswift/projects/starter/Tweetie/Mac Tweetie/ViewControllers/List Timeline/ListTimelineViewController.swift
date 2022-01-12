@@ -37,6 +37,7 @@ import RxCocoa
 import RealmSwift
 import RxRealm
 import Then
+import RxRealmDataSources
 
 class ListTimelineViewController: NSViewController {
   private let bag = DisposeBag()
@@ -54,10 +55,22 @@ class ListTimelineViewController: NSViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    NSApp.windows.first?.title = "@\(viewModel.list.username)/\(viewModel.list.slug)"
     bindUI()
   }
 
   func bindUI() {
     // Show tweets in table view
+    let dataSource = RxTableViewRealmDataSource<Tweet>.init(cellIdentifier: "TweetCellView",
+                                                            cellType: TweetCellView.self) { cell, indexPath, tweet in
+      cell.update(with: tweet)
+    }
+    
+    viewModel.tweets
+      .bind(to: tableView.rx.realmChanges(dataSource))
+      .disposed(by: bag)
   }
+  
+
 }

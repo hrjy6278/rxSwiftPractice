@@ -64,7 +64,10 @@ class ListPeopleViewController: UIViewController {
       .disposed(by: bag)
 
     //show message when no account available
-
+    viewModel.isFinishedFetch
+      .asDriver()
+      .drive(messageView.rx.isHidden)
+      .disposed(by: bag)
   }
 }
 
