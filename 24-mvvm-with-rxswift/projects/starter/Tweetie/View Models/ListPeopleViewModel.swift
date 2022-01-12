@@ -51,6 +51,8 @@ class ListPeopleViewModel {
 
   // MARK: - Output
   let people = BehaviorRelay<[User]?>(value: nil)
+  
+  //챌린지 1
   let isFinishedFetch = BehaviorRelay<Bool>(value: false)
 
   // MARK: - Init
@@ -92,6 +94,7 @@ class ListPeopleViewModel {
       .bind(to: people)
       .disposed(by: bag)
     
+    //챌린지1 피플목록이 로딩여부에 따른 true / false 바인딩
     people
       .map { $0 == nil ? false : true }
       .bind(to: isFinishedFetch)

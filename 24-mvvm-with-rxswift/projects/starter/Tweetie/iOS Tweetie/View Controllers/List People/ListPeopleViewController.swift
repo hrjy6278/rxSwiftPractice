@@ -64,6 +64,7 @@ class ListPeopleViewController: UIViewController {
       .disposed(by: bag)
 
     //show message when no account available
+    //챌린지 1 피플 목록을 다 불러오면 로딩중 뷰를 히든시킨다.
     viewModel.isFinishedFetch
       .asDriver()
       .drive(messageView.rx.isHidden)
