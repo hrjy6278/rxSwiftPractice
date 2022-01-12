@@ -44,4 +44,10 @@ class TweetCellView: UITableViewCell {
     message.text = tweet.text
     photo.setImage(with: URL(string: tweet.imageUrl))
   }
+  
+  override func prepareForReuse() {
+    self.photo.image = nil
+    self.name.text = nil
+    self.message.text = nil
+  }
 }

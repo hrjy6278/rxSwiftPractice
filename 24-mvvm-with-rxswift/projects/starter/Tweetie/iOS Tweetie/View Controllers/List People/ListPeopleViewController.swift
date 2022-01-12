@@ -88,6 +88,7 @@ extension ListPeopleViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     guard let tweet = viewModel.people.value?[indexPath.row] else { return }
+    
     navigator.show(segue: .personTimeline(viewModel.account, username: tweet.username), sender: self)
   }
 }

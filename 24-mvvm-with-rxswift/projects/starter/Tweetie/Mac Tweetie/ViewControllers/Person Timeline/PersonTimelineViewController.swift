@@ -61,7 +61,8 @@ class PersonTimelineViewController: NSViewController {
 
   func bindUI() {
     //bind the window title
-
+    
+    
     //reload the table when tweets come in
   }
 }

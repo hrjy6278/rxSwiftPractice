@@ -57,15 +57,20 @@ class PersonTimelineViewController: UIViewController {
     super.viewDidLoad()
     tableView.estimatedRowHeight = 90
     tableView.rowHeight = UITableView.automaticDimension
-    title = "Loading..."
     bindUI()
   }
 
   func bindUI() {
     //bind the title
-
-    //bind the tweets to the table view
+    viewModel.title
+      .bind(to: self.rx.title)
+      .disposed(by: bag)
     
+    //bind the tweets to the table view
+    let dataSource = createTweetsDataSource()
+    viewModel.tableViewSectionModel
+      .bind(to: tableView.rx.items(dataSource: dataSource))
+      .disposed(by: bag)
   }
 
   private func createTweetsDataSource() -> RxTableViewSectionedAnimatedDataSource<TweetSection> {
@@ -77,6 +82,7 @@ class PersonTimelineViewController: UIViewController {
     dataSource.titleForHeaderInSection = { (ds, section: Int) -> String in
       return ds[section].model
     }
+    
     return dataSource
   }
 }

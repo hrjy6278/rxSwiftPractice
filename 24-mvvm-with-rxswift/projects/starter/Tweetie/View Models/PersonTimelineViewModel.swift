@@ -34,9 +34,11 @@ import Foundation
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class PersonTimelineViewModel {
   private let fetcher: TimelineFetcher
+  private let disposeBag = DisposeBag()
 
   let username: String
 
@@ -44,13 +46,44 @@ class PersonTimelineViewModel {
   let account: Driver<TwitterAccount.AccountStatus>
 
   // MARK: - Output
-  public var tweets: Driver<[Tweet]>!
+  //챌린지2
+  public lazy var tweets: Driver<[Tweet]> = {
+    return self.fetcher.timeline
+      .asDriver(onErrorJustReturn: [])
+      .scan([]) { lastList, newList in
+        return newList + lastList
+      }
+  }()
+  
+  public let title: Observable<String>
+  public var tableViewSectionModel: Observable<[AnimatableSectionModel<String, Tweet>]>
 
   // MARK: - Init
   init(account: Driver<TwitterAccount.AccountStatus>, username: String, apiType: TwitterAPIProtocol.Type = TwitterAPI.self) {
+    let titleSubject = BehaviorSubject<String>(value: "None Found")
+    let sectionModel = BehaviorSubject<[AnimatableSectionModel<String, Tweet>]>(value: [])
+    
     self.account = account
     self.username = username
-
+    
+    
+    self.title = titleSubject.asObservable()
+    self.tableViewSectionModel = sectionModel
     fetcher = TimelineFetcher(account: account, username: username, apiType: apiType)
+    
+    tweets
+      .asObservable()
+      .flatMapLatest { _ in Observable.just(username) }
+      .bind(to: titleSubject.asObserver())
+      .disposed(by: disposeBag)
+    
+    tweets
+      .asObservable()
+      .flatMap {
+        Observable.from(optional: AnimatableSectionModel(model: "Tweet", items: $0)).toArray()
+      }
+      .bind(to: sectionModel)
+      .disposed(by: disposeBag)
+ 
   }
 }
