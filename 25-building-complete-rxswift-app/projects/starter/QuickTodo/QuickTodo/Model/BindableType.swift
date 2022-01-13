@@ -33,3 +33,19 @@
 import UIKit
 import RxSwift
 
+//뷰컨트롤러와 뷰모델을 바인딩하기 위한 프로토콜
+protocol BindableType: AnyObject {
+  associatedtype ViewModelType
+  
+  var viewModel: ViewModelType! { get set }
+  
+  func bindViewModel()
+}
+
+extension BindableType where Self: UIViewController {
+  func bindViewModel(to model: Self.ViewModelType) {
+    viewModel = model
+    loadViewIfNeeded()
+    bindViewModel()
+  }
+}

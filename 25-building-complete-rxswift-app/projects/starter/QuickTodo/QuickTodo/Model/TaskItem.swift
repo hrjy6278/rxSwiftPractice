@@ -34,4 +34,13 @@ import Foundation
 import RealmSwift
 import RxDataSources
 
-
+final class TaskItem: Object {
+  @objc dynamic var uid = 0
+  @objc dynamic var title = ""
+  @objc dynamic var added = Date()
+  @objc dynamic var checked: Date? = nil
+  
+  override class func primaryKey() -> String? {
+    return "uid"
+  }
+}

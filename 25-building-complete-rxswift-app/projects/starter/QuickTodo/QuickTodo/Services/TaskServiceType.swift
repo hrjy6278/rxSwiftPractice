@@ -42,5 +42,17 @@ enum TaskServiceError: Error {
 }
 
 protocol TaskServiceType {
-	
+  @discardableResult
+  func createTask(title: String) -> Observable<TaskItem>
+  
+  @discardableResult
+  func delete(task: TaskItem) -> Observable<Void>
+  
+  @discardableResult
+  func update(task: TaskItem, title: String) -> Observable<TaskItem>
+  
+  @discardableResult
+  func toggle(task: TaskItem) -> Observable<TaskItem>
+  
+  func tasks() -> Observable<Results<TaskItem>>
 }

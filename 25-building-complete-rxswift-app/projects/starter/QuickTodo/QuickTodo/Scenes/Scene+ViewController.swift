@@ -32,3 +32,29 @@
 
 import UIKit
 
+extension Scene {
+  func viewController() -> UIViewController {
+    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+    
+    switch self {
+    case .tasks(let tasksViewModel):
+      guard let navigationController = storyBoard.instantiateViewController(withIdentifier: "Tasks") as? UINavigationController,
+            let viewController = navigationController.viewControllers.first as? TasksViewController else {
+              return UIViewController()
+            }
+      
+      viewController.bindViewModel(to: tasksViewModel)
+      
+      return navigationController
+      
+    case .editTask(let editTaskViewModel):
+      guard let navigationController = storyBoard.instantiateViewController(withIdentifier: "EditTask") as? UINavigationController,
+            let viewController = navigationController.viewControllers.first as? EditTaskViewController else {
+              return UIViewController()
+            }
+      
+      viewController.bindViewModel(to: editTaskViewModel)
+      return navigationController
+    }
+  }
+}
