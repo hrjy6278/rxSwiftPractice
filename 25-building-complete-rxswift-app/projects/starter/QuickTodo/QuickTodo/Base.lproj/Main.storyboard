@@ -1,49 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jYo-Ju-cJK">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jYo-Ju-cJK">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <deployment version="4624" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Quick Todo-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="TasksViewController" customModule="QuickTodo" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="BYZ-38-t0r" customClass="TasksViewController" customModule="QuickTodo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="60" sectionHeaderHeight="60" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kXL-kU-7L5">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="569"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="60" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="kXL-kU-7L5">
+                                <rect key="frame" x="0.0" y="88" width="390" height="688"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskItemCell" id="Rmg-dc-Agn" customClass="TaskItemTableViewCell" customModule="QuickTodo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="60" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="49" width="390" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rmg-dc-Agn" id="5zj-3R-UB3">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="988-lq-IjQ">
-                                                    <rect key="frame" x="8" y="8" width="307" height="43"/>
+                                                    <rect key="frame" x="20" y="11" width="310" height="38"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gos-Zl-5EZ">
-                                                    <rect key="frame" x="315" y="8" width="60" height="43"/>
+                                                    <rect key="frame" x="330" y="8" width="60" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="80i-2m-6L5"/>
                                                     </constraints>
@@ -68,10 +62,10 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYz-yM-cML">
-                                <rect key="frame" x="0.0" y="569" width="375" height="34"/>
+                                <rect key="frame" x="0.0" y="776" width="390" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7YJ-WX-2v8">
-                                        <rect key="frame" x="8" y="17" width="359" height="0.0"/>
+                                        <rect key="frame" x="8" y="17" width="374" height="0.0"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -86,18 +80,18 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="YGB-pF-3yT"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="RYz-yM-cML" secondAttribute="trailing" id="BHi-c2-rRV"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="RYz-yM-cML" secondAttribute="bottom" id="Og5-a1-L8v"/>
+                            <constraint firstItem="YGB-pF-3yT" firstAttribute="trailing" secondItem="RYz-yM-cML" secondAttribute="trailing" id="BHi-c2-rRV"/>
+                            <constraint firstItem="YGB-pF-3yT" firstAttribute="bottom" secondItem="RYz-yM-cML" secondAttribute="bottom" id="Og5-a1-L8v"/>
                             <constraint firstItem="RYz-yM-cML" firstAttribute="top" secondItem="kXL-kU-7L5" secondAttribute="bottom" id="Rib-0i-szB"/>
-                            <constraint firstItem="kXL-kU-7L5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="a2k-6p-jt5"/>
-                            <constraint firstAttribute="trailing" secondItem="kXL-kU-7L5" secondAttribute="trailing" id="gCK-vk-gub"/>
-                            <constraint firstItem="RYz-yM-cML" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pW4-R6-kCg"/>
-                            <constraint firstItem="kXL-kU-7L5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="sm7-SP-b6n"/>
+                            <constraint firstItem="kXL-kU-7L5" firstAttribute="leading" secondItem="YGB-pF-3yT" secondAttribute="leading" id="a2k-6p-jt5"/>
+                            <constraint firstItem="YGB-pF-3yT" firstAttribute="trailing" secondItem="kXL-kU-7L5" secondAttribute="trailing" id="gCK-vk-gub"/>
+                            <constraint firstItem="RYz-yM-cML" firstAttribute="leading" secondItem="YGB-pF-3yT" secondAttribute="leading" id="pW4-R6-kCg"/>
+                            <constraint firstItem="kXL-kU-7L5" firstAttribute="top" secondItem="YGB-pF-3yT" secondAttribute="top" id="sm7-SP-b6n"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Quick Todo" id="MIU-vW-ouj">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="mFL-7c-wXj"/>
                     </navigationItem>
@@ -114,14 +108,11 @@
         <!--View Controller-->
         <scene sceneID="zUM-di-ylw">
             <objects>
-                <viewController id="jYo-Ju-cJK" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Jgb-YO-UhD"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-Us-wcg"/>
-                    </layoutGuides>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="jYo-Ju-cJK" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JLx-Vp-f7X">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="pqW-Jj-MwS"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
@@ -132,10 +123,9 @@
         <!--Navigation Controller-->
         <scene sceneID="Dig-g1-sZN">
             <objects>
-                <navigationController storyboardIdentifier="Tasks" id="G4P-Qa-txn" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
+                <navigationController storyboardIdentifier="Tasks" extendedLayoutIncludesOpaqueBars="YES" id="G4P-Qa-txn" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="T0Z-ia-eGE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="0.86666666670000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
@@ -150,9 +140,9 @@
         <!--Navigation Controller-->
         <scene sceneID="fEI-bg-hd3">
             <objects>
-                <navigationController storyboardIdentifier="EditTask" id="tYZ-ap-pBs" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="EditTask" extendedLayoutIncludesOpaqueBars="YES" id="tYZ-ap-pBs" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="myK-zB-Tcl">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="0.86666666670000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
@@ -167,41 +157,37 @@
         <!--Edit-->
         <scene sceneID="8cs-fr-zTC">
             <objects>
-                <viewController id="0CQ-Wm-bXw" customClass="EditTaskViewController" customModule="QuickTodo" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ng5-cV-oye"/>
-                        <viewControllerLayoutGuide type="bottom" id="wK1-Tb-41a"/>
-                    </layoutGuides>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="0CQ-Wm-bXw" customClass="EditTaskViewController" customModule="QuickTodo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8mG-PI-nNs">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nc6-nJ-Nv0">
-                                <rect key="frame" x="16" y="0.0" width="343" height="21"/>
+                                <rect key="frame" x="16" y="88" width="358" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J3V-ng-Qn8">
-                                <rect key="frame" x="16" y="29" width="343" height="241"/>
+                                <rect key="frame" x="16" y="117.00000000000003" width="358" height="337.66666666666674"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="I6p-Ad-g1P"/>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="J3V-ng-Qn8" firstAttribute="trailing" secondItem="8mG-PI-nNs" secondAttribute="trailingMargin" id="6E1-XF-X3P"/>
                             <constraint firstItem="J3V-ng-Qn8" firstAttribute="height" secondItem="8mG-PI-nNs" secondAttribute="height" multiplier="0.4" id="SNQ-Nv-EOd"/>
                             <constraint firstItem="J3V-ng-Qn8" firstAttribute="leading" secondItem="8mG-PI-nNs" secondAttribute="leadingMargin" id="eaw-FU-ZrC"/>
-                            <constraint firstItem="nc6-nJ-Nv0" firstAttribute="top" secondItem="ng5-cV-oye" secondAttribute="bottom" id="k95-J7-67x"/>
+                            <constraint firstItem="nc6-nJ-Nv0" firstAttribute="top" secondItem="I6p-Ad-g1P" secondAttribute="top" id="k95-J7-67x"/>
                             <constraint firstItem="nc6-nJ-Nv0" firstAttribute="leading" secondItem="8mG-PI-nNs" secondAttribute="leadingMargin" id="lJ6-r6-qcD"/>
                             <constraint firstItem="nc6-nJ-Nv0" firstAttribute="trailing" secondItem="8mG-PI-nNs" secondAttribute="trailingMargin" id="lg3-yF-pwY"/>
                             <constraint firstItem="J3V-ng-Qn8" firstAttribute="top" secondItem="nc6-nJ-Nv0" secondAttribute="bottom" constant="8" id="m4D-Q2-LPo"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Edit" id="gdX-E7-dMn">
                         <barButtonItem key="leftBarButtonItem" title="OK" id="gdE-Pi-mFI"/>
                         <barButtonItem key="rightBarButtonItem" title="Cancel" id="8Sg-We-y3S"/>
@@ -221,5 +207,8 @@
     </scenes>
     <resources>
         <image name="ItemChecked" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

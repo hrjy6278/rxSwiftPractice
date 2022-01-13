@@ -43,15 +43,57 @@ class TasksViewController: UIViewController, BindableType {
   @IBOutlet var newTaskButton: UIBarButtonItem!
   
   var viewModel: TasksViewModel!
+  var dataSource: RxTableViewSectionedAnimatedDataSource<TaskSection>?
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 60
+    configureDataSource()
   }
   
   func bindViewModel() {
-
+    dataSource.flatMap { dataSource in
+      viewModel.sectionedItems
+        .bind(to: tableView.rx.items(dataSource: dataSource))
+        .disposed(by: self.rx.disposeBag)
+    }
+    
+    newTaskButton.rx.action = viewModel.onCreateTask()
+    
+    tableView.rx.itemSelected
+      .do(onNext: { [weak self] indexPath in
+        self?.tableView.deselectRow(at: indexPath, animated: true)
+      })
+      .compactMap { [weak self] indexPath -> TaskItem? in
+        guard let self = self else { return nil }
+        guard let tasksItem = try self.dataSource?.model(at: indexPath) as? TaskItem else {
+          return nil
+        }
+        return tasksItem
+      }
+      .bind(to: viewModel.editAction.inputs.asObserver())
+      .disposed(by: rx.disposeBag)
+      
+  }
+  
+  private func configureDataSource() {
+    dataSource = RxTableViewSectionedAnimatedDataSource<TaskSection>(configureCell: { [weak self]  dataSource, tableView, indexPath, item in
+      
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: "TaskItemCell",
+                                                     for: indexPath) as? TaskItemTableViewCell else {
+        fatalError()
+      }
+      
+      if let self = self {
+        cell.configure(with: item,
+                       action: self.viewModel.onToggle(task: item))
+      }
+      
+      return cell
+    }, titleForHeaderInSection: { dataSource, indexPath in
+      dataSource.sectionModels[indexPath].model
+    })
   }
 }
