@@ -44,6 +44,7 @@ class TasksViewController: UIViewController, BindableType {
   
   var viewModel: TasksViewModel!
   var dataSource: RxTableViewSectionedAnimatedDataSource<TaskSection>?
+  let disposeBag = DisposeBag()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -51,6 +52,7 @@ class TasksViewController: UIViewController, BindableType {
     tableView.rowHeight = UITableView.automaticDimension
     tableView.estimatedRowHeight = 60
     configureDataSource()
+    setEditing(true, animated: false)
   }
   
   func bindViewModel() {
@@ -81,7 +83,21 @@ class TasksViewController: UIViewController, BindableType {
         self.statisticsLabel.text = "Todo: \(count.todo), Done: \(count.done)"
       })
       .disposed(by: rx.disposeBag)
-      
+    
+    
+//    tableView.rx.itemDeleted.map { indexPath -> TaskItem in
+//      try! self.tableView.rx.model(at: indexPath)
+//    }
+//    .subscribe(onNext: {
+//      self.viewModel.onDelete(task: $0)
+//    })
+    
+    tableView.rx.itemDeleted.map { indexPath -> TaskItem in
+      try self.tableView.rx.model(at: indexPath)
+    }
+    .subscribe(onNext: viewModel.delete(_:))
+    .disposed(by: disposeBag)
+               
   }
   
   private func configureDataSource() {
@@ -100,6 +116,9 @@ class TasksViewController: UIViewController, BindableType {
       return cell
     }, titleForHeaderInSection: { dataSource, indexPath in
       dataSource.sectionModels[indexPath].model
+    }
+   ,canEditRowAtIndexPath: { dataSource, indexPath in
+      return true
     })
   }
 }

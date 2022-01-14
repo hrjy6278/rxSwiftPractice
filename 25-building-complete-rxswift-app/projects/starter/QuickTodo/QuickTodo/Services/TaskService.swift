@@ -119,6 +119,7 @@ struct TaskService: TaskServiceType {
     let result = withRealm("getting tasks") { realm -> Observable<Results<TaskItem>> in
       let realm = try Realm()
       let tasks = realm.objects(TaskItem.self)
+      
       return Observable.collection(from: tasks)
     }
     return result ?? .empty()

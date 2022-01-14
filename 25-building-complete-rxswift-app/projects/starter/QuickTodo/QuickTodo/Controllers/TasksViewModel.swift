@@ -122,4 +122,8 @@ struct TasksViewModel {
         .asObservable()
     }
   }
+  
+  func delete(_ item: TaskItem) {
+    self.taskService.delete(task: item)
+  }
 }
