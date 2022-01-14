@@ -13,6 +13,8 @@
 		3D932B081E4D245600E4BC3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D932B061E4D245600E4BC3D /* Main.storyboard */; };
 		3D932B0A1E4D245600E4BC3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D932B091E4D245600E4BC3D /* Assets.xcassets */; };
 		3D932B0D1E4D245600E4BC3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D932B0B1E4D245600E4BC3D /* LaunchScreen.storyboard */; };
+		742B1BCF27914008004992EB /* PushedEditTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742B1BCE27914008004992EB /* PushedEditTaskViewController.swift */; };
+		742B1BD12791402B004992EB /* PushedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742B1BD02791402B004992EB /* PushedEditViewModel.swift */; };
 		D8D4B084216A9B2C450E606F /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4B40D0383E56BA2D62F95 /* Scene.swift */; };
 		D8D4B29BEEE5F90B2EEFD433 /* TasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4B9842A4352B148BF885E /* TasksViewModel.swift */; };
 		D8D4B38B0D79DD3BCEE7424A /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4B0622FCB80BA64F522B8 /* TaskItem.swift */; };
@@ -38,6 +40,8 @@
 		3D932B091E4D245600E4BC3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D932B0C1E4D245600E4BC3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D932B0E1E4D245600E4BC3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		742B1BCE27914008004992EB /* PushedEditTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushedEditTaskViewController.swift; sourceTree = "<group>"; };
+		742B1BD02791402B004992EB /* PushedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushedEditViewModel.swift; sourceTree = "<group>"; };
 		C5D397AA104AF186D7A1C8B2 /* Pods_QuickTodo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickTodo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D4B0622FCB80BA64F522B8 /* TaskItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		D8D4B40D0383E56BA2D62F95 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				D8D4B5E9DE757713868B0E95 /* TasksViewController.swift */,
 				D8D4B669B9E5D5F0A890C14A /* EditTaskViewModel.swift */,
 				D8D4BC91C06633B3679DD8E7 /* EditTaskViewController.swift */,
+				742B1BD02791402B004992EB /* PushedEditViewModel.swift */,
+				742B1BCE27914008004992EB /* PushedEditTaskViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				D8D4B38B0D79DD3BCEE7424A /* TaskItem.swift in Sources */,
 				D8D4BE38CFBD47278990836B /* TaskServiceType.swift in Sources */,
 				3D2E844A1E4E7A3D0075B16B /* BindableType.swift in Sources */,
+				742B1BCF27914008004992EB /* PushedEditTaskViewController.swift in Sources */,
 				D8D4BCFC41706D2948B976E9 /* TaskService.swift in Sources */,
 				D8D4B29BEEE5F90B2EEFD433 /* TasksViewModel.swift in Sources */,
 				D8D4B6D94E7B54B9C1F34CBD /* TasksViewController.swift in Sources */,
@@ -327,6 +334,7 @@
 				D8D4B443890094C4F6E8F93D /* TaskItemTableViewCell.swift in Sources */,
 				D8D4B084216A9B2C450E606F /* Scene.swift in Sources */,
 				D8D4BFAE409AAC26A804D7E6 /* SceneCoordinatorType.swift in Sources */,
+				742B1BD12791402B004992EB /* PushedEditViewModel.swift in Sources */,
 				D8D4BFC445A53540D28CDB55 /* SceneCoordinator.swift in Sources */,
 				D8D4BF8A5D0B3EA190CF4C58 /* UINavigationController+Rx.swift in Sources */,
 				D8D4BA1FDBE501C5676863C6 /* Scene+ViewController.swift in Sources */,

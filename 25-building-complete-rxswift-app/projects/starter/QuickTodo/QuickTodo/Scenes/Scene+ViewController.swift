@@ -55,6 +55,15 @@ extension Scene {
       
       viewController.bindViewModel(to: editTaskViewModel)
       return navigationController
+      
+    case .pushedEditTask(let pushedEditViewModel):
+     guard let viewController = storyBoard
+        .instantiateViewController(withIdentifier: "Pushed") as? PushedEditTaskViewController else {
+          return UIViewController()
+        }
+      
+      viewController.bindViewModel(to: pushedEditViewModel)
+      return viewController  
     }
   }
 }

@@ -59,9 +59,10 @@ struct EditTaskViewModel {
         cancelAction.execute()
       }
       
-      return coordinator.pop()
-        .asObservable()
-        .map { _ in }
+      coordinator.pop()
+     
+      
+      return Observable.never()
     }
   }
 }

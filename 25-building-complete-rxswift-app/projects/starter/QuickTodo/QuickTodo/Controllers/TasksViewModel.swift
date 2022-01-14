@@ -43,12 +43,12 @@ struct TasksViewModel {
   
   lazy var editAction: Action<TaskItem, Never> = { this in
     return Action { task in
-      let editViewModel = EditTaskViewModel(task: task,
-                                            coordinator: this.sceneCoordinator,
-                                            updateAction: this.onUpdateTitle(task: task))
+      let pushedEditViewModel = PushedEditViewModel()
+      
       return this.sceneCoordinator
-        .transition(to: .editTask(editViewModel), type: .modal)
+        .transition(to: .pushedEditTask(pushedEditViewModel), type: .push)
         .asObservable()
+        
     }
   }(self)
   

@@ -34,7 +34,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SceneCoordinator: SceneCoordinatorType {
+class SceneCoordinator: NSObject, SceneCoordinatorType {
 
   private var window: UIWindow
   private var currentViewController: UIViewController
@@ -66,6 +66,7 @@ class SceneCoordinator: SceneCoordinatorType {
         guard let navigationController = currentViewController.navigationController else {
           fatalError("Can't push a view controller without a current navigation controller")
         }
+      navigationController.delegate = self
         // one-off subscription to be notified when push complete
         _ = navigationController.rx.delegate
           .sentMessage(#selector(UINavigationControllerDelegate.navigationController(_:didShow:animated:)))
@@ -112,5 +113,11 @@ class SceneCoordinator: SceneCoordinatorType {
     return subject.asObservable()
       .take(1)
       .ignoreElements()
+  }
+}
+
+extension SceneCoordinator: UINavigationControllerDelegate {
+  func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    currentViewController = viewController
   }
 }
