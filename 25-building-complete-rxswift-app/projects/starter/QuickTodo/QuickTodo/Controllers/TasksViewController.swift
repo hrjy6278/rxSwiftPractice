@@ -75,6 +75,12 @@ class TasksViewController: UIViewController, BindableType {
       }
       .bind(to: viewModel.editAction.inputs.asObserver())
       .disposed(by: rx.disposeBag)
+    
+    viewModel.count
+      .subscribe(onNext: { count in
+        self.statisticsLabel.text = "Todo: \(count.todo), Done: \(count.done)"
+      })
+      .disposed(by: rx.disposeBag)
       
   }
   

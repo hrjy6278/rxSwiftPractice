@@ -69,6 +69,10 @@ struct TasksViewModel {
     }
   }
   
+  var count: Observable<(todo: Int, done: Int)> {
+    self.taskService.count()
+  }
+  
   init(taskService: TaskServiceType, coordinator: SceneCoordinatorType) {
     self.taskService = taskService
     self.sceneCoordinator = coordinator

@@ -55,4 +55,6 @@ protocol TaskServiceType {
   func toggle(task: TaskItem) -> Observable<TaskItem>
   
   func tasks() -> Observable<Results<TaskItem>>
+  
+  func count() -> Observable<(todo: Int, done: Int)>
 }

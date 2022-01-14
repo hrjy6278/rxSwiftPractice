@@ -36,7 +36,7 @@ import RxSwift
 import RxRealm
 
 struct TaskService: TaskServiceType {
-
+  
   init() {
     // create a few default tasks
     do {
@@ -53,7 +53,7 @@ struct TaskService: TaskServiceType {
     } catch _ {
     }
   }
-
+  
   private func withRealm<T>(_ operation: String, action: (Realm) throws -> T) -> T? {
     do {
       let realm = try Realm()
@@ -63,7 +63,7 @@ struct TaskService: TaskServiceType {
       return nil
     }
   }
-
+  
   @discardableResult
   func createTask(title: String) -> Observable<TaskItem> {
     let result = withRealm("creating") { realm -> Observable<TaskItem> in
@@ -77,7 +77,7 @@ struct TaskService: TaskServiceType {
     }
     return result ?? .error(TaskServiceError.creationFailed)
   }
-
+  
   @discardableResult
   func delete(task: TaskItem) -> Observable<Void> {
     let result = withRealm("deleting") { realm-> Observable<Void> in
@@ -88,7 +88,7 @@ struct TaskService: TaskServiceType {
     }
     return result ?? .error(TaskServiceError.deletionFailed(task))
   }
-
+  
   @discardableResult
   func update(task: TaskItem, title: String) -> Observable<TaskItem> {
     let result = withRealm("updating title") { realm -> Observable<TaskItem> in
@@ -99,7 +99,7 @@ struct TaskService: TaskServiceType {
     }
     return result ?? .error(TaskServiceError.updateFailed(task))
   }
-
+  
   @discardableResult
   func toggle(task: TaskItem) -> Observable<TaskItem> {
     let result = withRealm("toggling") { realm -> Observable<TaskItem> in
@@ -114,7 +114,7 @@ struct TaskService: TaskServiceType {
     }
     return result ?? .error(TaskServiceError.toggleFailed(task))
   }
-
+  
   func tasks() -> Observable<Results<TaskItem>> {
     let result = withRealm("getting tasks") { realm -> Observable<Results<TaskItem>> in
       let realm = try Realm()
@@ -122,5 +122,22 @@ struct TaskService: TaskServiceType {
       return Observable.collection(from: tasks)
     }
     return result ?? .empty()
+  }
+  
+  //챌린지1 todo , done 갯수 나타내기
+  func count() -> Observable<(todo: Int, done: Int)> {
+   let todo = tasks()
+      .map { result in
+        result.filter { $0.checked == nil }.count
+      }
+    
+    let done = tasks()
+      .map { result in
+        result.filter { $0.checked != nil }.count
+      }
+     
+   return Observable.zip(todo, done) { todo, done in
+     return (todo: todo, done: done)
+    }
   }
 }
